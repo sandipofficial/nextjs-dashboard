@@ -43,7 +43,7 @@ export default async function RevenueChart() { // Make component async, remove t
               <div
                 className="w-full rounded-md bg-blue-300"
                 style={{
-                  height: `${(chartHeight / topLabel) *  month.revenue}px`,
+                  height: `${(chartHeight / topLabel)  *  month.revenue}px`,
                 }}
               ></div>
               <p className="-rotate-90 text-sm text-gray-400 sm:rotate-0">
