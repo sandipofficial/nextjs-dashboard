@@ -77,8 +77,8 @@ export async function createInvoice(prevState: State, formData: FormData) {
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
 export async function updateInvoice(
-  prevState: State,
   id: string,
+  prevState: State,
   formData: FormData
 ) {
   const validatedFields = UpdateInvoice.safeParse({
@@ -106,8 +106,7 @@ export async function updateInvoice(
       WHERE id = ${id}
     `;
   } catch (error) {
-    // We'll log the error to the console for now
-    console.error(error);
+    return { message: 'Database Error: Failed to Update Invoice.' };
   }
 
   revalidatePath("/dashboard/invoices");
