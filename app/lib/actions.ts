@@ -29,6 +29,7 @@ export type State = {
     customerId?: string[];
     amount?: string[];
     status?: string[];
+    
   };
   message?: string | null;
 };
@@ -139,4 +140,78 @@ export async function authenticate(
     }
     throw error;
   }
+}
+
+const FormSchemaCustomer = z.object({
+  id: z.string(),
+  name: z.string({
+    invalid_type_error: "Please valid name.",
+  }),
+  email: z.string({
+    invalid_type_error: "Please valid email.",
+  }),
+  image_url:  z.string({
+    invalid_type_error: "Please valid image url.",
+  }),
+});
+
+export type CustomerState = {
+  errors?: {
+    name?: string[];
+    email?: string[];
+    image_url?: string[];
+  };
+  message?: string | null;
+};
+
+const CreateCustomer = FormSchemaCustomer.omit({ id: true });
+
+export async function createCustomer(
+  prevState: CustomerState,
+  formData: FormData
+): Promise<CustomerState> {
+  // Validate form using Zod
+  const validatedFields = CreateCustomer.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    image_url: formData.get("image_url"),
+  });
+
+  // If validation fails, return updated state with errors and message.
+  if (!validatedFields.success) {
+    return {
+      ...prevState,
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Create Customer.",
+    };
+  }
+
+  // Prepare data for insertion into the database
+  const { name, email, image_url } = validatedFields.data;
+
+  // Insert data into the database
+  try {
+    await sql`
+      INSERT INTO customers (name, email, image_url)
+      VALUES (${name}, ${email}, ${image_url})
+    `;
+  } catch (error) {
+    // If a database error occurs, return a specific error message.
+    return {
+      ...prevState,
+      message: "Database Error: Failed to Create Customer.",
+    };
+  }
+
+  // After successful insertion, you may want to clear errors and set a success message.
+  // The following lines will revalidate the customers page and redirect:
+  revalidatePath("/dashboard/customers");
+  redirect("/dashboard/customers");
+
+  // In a typical flow you might not reach here due to the redirect.
+  return {
+    ...prevState,
+    errors: {},
+    message: "Customer created successfully!",
+  };
 }
