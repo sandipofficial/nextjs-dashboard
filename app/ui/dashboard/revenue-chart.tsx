@@ -1,8 +1,8 @@
-import { generateYAxis } from '@/app/lib/utils';
-import { CalendarIcon } from '@heroicons/react/24/outline';
-import { lusitana } from '@/app/ui/fonts';
+import { generateYAxis } from "@/app/lib/utils";
+import { CalendarIcon } from "@heroicons/react/24/outline";
+import { lusitana } from "@/app/ui/fonts";
 // import { Revenue } from '@/app/lib/definitions';
-import { fetchRevenue } from '@/app/lib/data';
+import { fetchRevenue } from "@/app/lib/data";
 
 // This component is representational only.
 // For data visualization UI, check out:
@@ -10,12 +10,13 @@ import { fetchRevenue } from '@/app/lib/data';
 // https://www.chartjs.org/
 // https://airbnb.io/visx/
 
-export default async function RevenueChart() { // Make component async, remove the props
+export default async function RevenueChart() {
+  // Make component async, remove the props
   const revenue = await fetchRevenue(); // Fetch data inside the component
- 
+  console.log(revenue);
   const chartHeight = 350;
   const { yAxisLabels, topLabel } = generateYAxis(revenue);
- 
+
   if (!revenue || revenue.length === 0) {
     return <p className="mt-4 text-gray-400">No data available.</p>;
   }
@@ -43,7 +44,9 @@ export default async function RevenueChart() { // Make component async, remove t
               <div
                 className="w-full rounded-md bg-blue-300"
                 style={{
-                  height: `${(chartHeight / topLabel)  *  month.revenue}px`,
+                  height: `${
+                    ((chartHeight / topLabel) * month.revenue) / 10
+                  }px`,
                 }}
               ></div>
               <p className="-rotate-90 text-sm text-gray-400 sm:rotate-0">

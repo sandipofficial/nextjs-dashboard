@@ -1,4 +1,4 @@
-import Form from '@/app/ui/customers/create-customer-form';
+import Form from '@/app/ui/customers/create-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchCustomers } from '@/app/lib/data';
  

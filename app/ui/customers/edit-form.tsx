@@ -1,16 +1,25 @@
 "use client";
 
-import { Customers, CustomerField } from "@/app/lib/definitions";
+import { Customer, CustomerField, CustomerForm, InvoiceForm } from "@/app/lib/definitions";
+import {
+  CheckIcon,
+  ClockIcon,
+  CurrencyDollarIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/button";
-import { createCustomer, CustomerState } from "../../lib/actions";
+import { CustomerState, State, updateCustomer } from "@/app/lib/actions";
 import { useActionState } from "react";
 
-export default function Form({ customers }: { customers: CustomerField[] }) {
-  // Initialize state for handling validation errors and messages
+export default function EditInvoiceForm({
+  customer,
+}: {
+  customer: CustomerField
+}) {
   const initialState: CustomerState = { message: null, errors: {} };
-  const [state, formAction] = useActionState(createCustomer, initialState);
+  const updateCustomerWithId = updateCustomer.bind(null, customer.id);
+  const [state, formAction] = useActionState(updateCustomerWithId, initialState);
 
   return (
     <form action={formAction}>
@@ -26,6 +35,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               name="name"
               type="text"
               placeholder="Enter customer name"
+              defaultValue={customer.name}
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="name-error"
             />
@@ -52,6 +62,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               name="email"
               type="email"
               placeholder="Enter email"
+              defaultValue={customer.email}
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="email-error"
             />
@@ -77,6 +88,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
               name="image_url"
               type="text"
               placeholder="Enter image URL"
+              defaultValue={customer.image_url}
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="image_url-error"
             />
@@ -101,7 +113,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         >
           Cancel
         </Link>
-        <Button type="submit">Create Customer</Button>
+        <Button type="submit">Edit Customer</Button>
       </div>
     </form>
   );
