@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
-import InvoiceStatus from '@/app/ui/invoices/status';
-import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
-import { fetchFilteredInvoices } from '@/app/lib/data';
-import noDataFound from '../../../public/undraw_no-data_ig65.svg'
+import Image from "next/image";
+import { UpdateInvoice, DeleteInvoice } from "@/app/ui/invoices/buttons";
+import InvoiceStatus from "@/app/ui/invoices/status";
+import { formatDateToLocal, formatCurrency } from "@/app/lib/utils";
+import { fetchFilteredInvoices } from "@/app/lib/data";
+import noDataFound from "../../../public/undraw_no-data_ig65.svg";
 
 export default async function InvoicesTable({
   query,
@@ -89,13 +89,14 @@ export default async function InvoicesTable({
               {invoices.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-4 text-gray-500 ">
-
-
-                    <div className='flex justify-center items-center flex-col gap-3 pt-6 '>
-                      <Image src={noDataFound} alt='no-data-found' width={180}></Image>
+                    <div className="flex justify-center items-center flex-col gap-3 pt-6 ">
+                      <Image
+                        src={noDataFound}
+                        alt="no-data-found"
+                        width={180}
+                      ></Image>
                       <strong>No Data Found</strong>
                     </div>
-
                   </td>
                 </tr>
               ) : (

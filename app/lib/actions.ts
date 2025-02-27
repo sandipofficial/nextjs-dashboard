@@ -257,3 +257,66 @@ export async function deleteCustomer(id: string) {
   await sql`DELETE FROM customers WHERE id = ${id}`;
   revalidatePath("/dashboard/customers");
 }
+
+//signup
+const SignupFormSchema = z.object({
+  id: z.string().optional(), // Include id if needed
+  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters." }),
+  confirmPassword: z.string(),
+});
+
+export type SignupState = {
+  errors?: {
+    name?: string[];
+    email?: string[];
+    password?: string[];
+    confirmPassword?: string[];
+  };
+  message?: string | null;
+};
+
+const CreateUser = SignupFormSchema.omit({ id: true });
+
+export async function createUser(prevState: SignupState, formData: FormData) {
+  // Validate form using Zod
+  const validatedFields = SignupFormSchema.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+  });
+
+  // If validation fails, return errors
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Please check the form for errors.",
+    };
+  }
+
+  const { name, email, password } = validatedFields.data;
+
+  try {
+    // Here you would typically hash the password and create the user in your database
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // await db.user.create({ data: { name, email, password: hashedPassword } })
+    await sql`
+      INSERT INTO users (name, email, password)
+      VALUES (${name}, ${email}, ${hashedPassword})
+    `;
+
+    // For demo purposes, we'll just simulate a delay
+    // await new Promise((resolve) => setTimeout(resolve, 1000))
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to create user.",
+    };
+  }
+
+  revalidatePath("/auth/login");
+  redirect("/auth/login"); // Redirect to dashboard after successful signup
+}
