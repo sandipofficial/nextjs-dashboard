@@ -8,6 +8,7 @@ datasource db {
 }
 
 model Revenue {
+  id    String @id @default(uuid())
   month   String @unique
   revenue Int
 }
