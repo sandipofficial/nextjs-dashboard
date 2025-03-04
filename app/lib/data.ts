@@ -14,27 +14,28 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 export async function updateRevenue() {
   try {
-    // Step 1: Compute monthly revenue from paid invoices
+    // Step 1: Compute monthly revenue for each user from paid invoices
     const invoiceData = await sql<Revenue[]>`
       WITH monthly_revenue AS (
         SELECT 
-          DATE_TRUNC('month', date) AS month_start,  -- Gets first day of the month
-          TO_CHAR(date, 'Mon') AS month,             -- Gets 'Jan', 'Feb', etc.
-          SUM(amount) AS revenue
+          invoices.user_id,                        
+          DATE_TRUNC('month', invoices.date) AS month_start, 
+          TO_CHAR(invoices.date, 'Mon') AS month,  
+          SUM(invoices.amount) AS revenue
         FROM invoices
-        WHERE status = 'paid'  -- Only count paid invoices
-        GROUP BY month_start, month
+        WHERE invoices.status = 'paid'  
+        GROUP BY invoices.user_id, month_start, month
       )
-      SELECT month, revenue FROM monthly_revenue;
+      SELECT user_id, month, revenue FROM monthly_revenue;
     `;
 
     // Step 2: Update the revenue table
     await Promise.all(
       invoiceData.map(async (rev) => {
         await sql`
-          INSERT INTO revenue (month, revenue)
-          VALUES (${rev.month}, ${rev.revenue})
-          ON CONFLICT (month) DO UPDATE
+          INSERT INTO revenue (user_id, month, revenue)
+          VALUES (${rev.user_id}, ${rev.month}, ${rev.revenue})
+          ON CONFLICT (user_id, month) DO UPDATE
           SET revenue = EXCLUDED.revenue;
         `;
       })
@@ -45,6 +46,7 @@ export async function updateRevenue() {
     console.error("❌ Error updating revenue:", error);
   }
 }
+
 
 export async function fetchRevenue() {
   try {

@@ -18,7 +18,7 @@ export default async function CustomersTable({
         Customers
       </h1>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search placeholder="Search invoices..." />
+        <Search placeholder="Search Customers..." />
         <CreateCustomer />
       </div>{" "}
       <div className="mt-6 flow-root">

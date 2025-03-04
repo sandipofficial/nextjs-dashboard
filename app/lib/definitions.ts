@@ -18,6 +18,7 @@ export type User = {
   email: string;
   passwordHash: string;
   mobileNumber: string;
+  initials: string;
   dob: string;
   gender?: "Male" | "Female" | "Other";
   profilePictureUrl?: string;

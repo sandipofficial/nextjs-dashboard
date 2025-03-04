@@ -16,3 +16,9 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.input-field {
+  @apply w-full p-2 border border-primary rounded-md focus:outline-none focus:border-accenthover transition;
+}
+
+

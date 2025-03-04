@@ -11,6 +11,70 @@ import { updateRevenue } from "./data";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
+
+ const SignupFormSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(2, { message: "First name must be at least 2 characters." })
+      .regex(/^[A-Za-z]+$/, { message: "First name can only contain letters." }),
+
+    lastName: z
+      .string()
+      .min(2, { message: "Last name must be at least 2 characters." })
+      .regex(/^[A-Za-z]+$/, { message: "Last name can only contain letters." }),
+
+    email: z
+      .string()
+      .email({ message: "Please enter a valid email address." }),
+
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters." })
+      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter." })
+      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter." })
+      .regex(/[0-9]/, { message: "Password must contain at least one number." })
+      .regex(/[\W_]/, { message: "Password must contain at least one special character." }),
+
+    confirmPassword: z.string(),
+
+    mobileNumber: z
+      .string()
+      .regex(/^\d{10}$/, { message: "Mobile number must be exactly 10 digits." }),
+
+    dob: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, { message: "Date of Birth must be in YYYY-MM-DD format." }),
+
+    gender: z.enum(["Male", "Female", "Other"]).optional(),
+
+    profilePictureUrl: z.string().url({ message: "Invalid profile picture URL." }).optional(),
+
+    address: z
+      .object({
+        street: z.string().min(3, { message: "Street must be at least 3 characters long." }),
+        city: z.string().min(2, { message: "City must be at least 2 characters long." }),
+        state: z.string().min(2, { message: "State must be at least 2 characters long." }),
+        country: z.string().min(2, { message: "Country must be at least 2 characters long." }),
+        zipCode: z.string().regex(/^\d{5,6}$/, { message: "Zip code must be 5 or 6 digits." }),
+      }),
+
+    roleId: z.string().uuid({ message: "Invalid role ID format." }),
+
+    panNumber: z
+      .string()
+      .regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, { message: "Invalid PAN number format." })
+      .optional(),
+
+    preferredLanguage: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+
+
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string({
@@ -63,16 +127,29 @@ export async function createInvoice(prevState: State, formData: FormData) {
 
   // Insert data into the database
   try {
-    await sql`
-      INSERT INTO invoices (customer_id, amount, status, date)
-      VALUES (${customerId}, ${amountInCents}, ${status}, ${formattedDate})
+    const user = await sql<{ id: string }[]>`
+        SELECT id FROM users WHERE customer_id = ${customerId} LIMIT 1;
     `;
-  } catch (error) {
+
+    if (user.length === 0) {
+        return { message: "User not found for given customer_id." };
+    }
+
+    const userId = user[0].id; // Extract user_id
+
+    await sql`
+      INSERT INTO invoices (customer_id, user_id, amount, status, date)
+      VALUES (${customerId}, ${userId}, ${amountInCents}, ${status}, ${formattedDate})
+    `;
+
+    console.log("✅ Invoice created successfully.");
+} catch (error) {
     return {
-      message: "Database Error: Failed to Create Invoice.",
-      error,
+        message: "Database Error: Failed to Create Invoice.",
+        error,
     };
-  }
+}
+
 
   await updateRevenue();
   revalidatePath("/dashboard/invoices");
@@ -259,15 +336,7 @@ export async function deleteCustomer(id: string) {
 }
 
 //signup
-const SignupFormSchema = z.object({
-  id: z.string().optional(), // Include id if needed
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters." }),
-  confirmPassword: z.string(),
-});
+
 
 export type SignupState = {
   errors?: {

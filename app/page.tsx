@@ -3,54 +3,55 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { lusitana } from "./ui/fonts";
 import Image from "next/image";
+import Header from "./ui/auth/header";
 
 export default function Page() {
   return (
-    <main className="flex min-h-screen flex-col p-6">
-      <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-15">
-        <AcmeLogo />
-      </div>
-      <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
-        <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
-          <div className="relative w-0 h-0 border-l-[15px] border-r-[15px] border-b-[26px] border-l-transparent border-r-transparent border-b-black" />
+    <main className=" bg-background flex min-h-screen flex-col p-4">
+      <Header/>
+      <div className="relative w-full h-[90vh] flex items-center justify-center group overflow-hidden">
+        {/* Background Image */}
+        <Image
+          src="/hero-desktop.png"
+          width={650}
+          height={160}
+          className="absolute z-0 mx-auto"
+          alt="Finance Dashboard Background"
+        />
+
+        {/* Hover Glow Effect */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div
+            className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.2)_0%,transparent_50%)] pointer-events-none"
+            style={{ width: "100vw", height: "100vh" }}
+          />
+        </div>
+
+        {/* Foreground Content */}
+        <div className="relative h-[90vh] z-10 flex flex-col items-center text-center bg-background/30 backdrop-blur-sm rounded-lg p-8 md:p-12 shadow-lg">
           <p
-            className={`text-xl text-gray-800 md:text-3xl md:leading-normal ${lusitana.className}`}
+            className={`w-[90vw] text-xl text-gray-900 md:text-3xl md:leading-normal pt-14 text-accent ${lusitana.className}`}
           >
-            <strong>Welcome to Acme.</strong> This is the example for the{" "}
+            <strong>Welcome to Acme.</strong> <br /> This is the example for the{" "}
             <a href="https://nextjs.org/learn/" className="text-blue-500">
               Next.js Learn Project
-            </a>
-            . , based on the finance dashboard
+            </a>{" "}
+            <br />, based on the finance dashboard.
           </p>
-          <Link
-            href="/login"
-            className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
-          >
-            <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
-          </Link>
-        </div>
-        <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
-          {/* Add Hero Images Here */}
-          {/* Desktop */}
-          <Image
-            src="/hero-desktop.png"
-            width={1000}
-            height={760}
-            // quality={75}
-            // priority={true}
-            blurDataURL="hero image"
-            className="hidden md:block"
-            alt="Screenshots of the dashboard project showing desktop version"
-          />
-          {/* Mobile */}
-          <Image
-            src="/hero-mobile.png"
-            width={560}
-            height={620}
-            // fill
-            className="block md:hidden"
-            alt="Screenshot of the dashboard project showing mobile version"
-          />
+          <div className="flex gap-3 mt-6">
+            <Link
+              href="/auth/login"
+              className="flex items-center gap-5 rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
+            >
+              <span>Log in</span>
+            </Link>
+            <Link
+              href="/auth/signup"
+              className="flex items-center gap-5 rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
+            >
+              <span>Sign Up</span>
+            </Link>
+          </div>
         </div>
       </div>
     </main>
