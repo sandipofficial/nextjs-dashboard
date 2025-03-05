@@ -1,3 +1,4 @@
+import { ArrowLeftCircleIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export function Signup() {
@@ -22,17 +23,66 @@ export function Login() {
   );
 }
 
-type NextButtonProps = {
+export type NextButtonProps = {
   nextStep: () => void; // Function that doesn't return anything
 };
+
+export type PrevButtonProps = {
+  prevStep: () => void
+};
+
+export type OtpButtonProps = {
+  handleSendOtp: () => void
+}
+
+export type SubmitButtonProps = {
+  handleSubmit: () => void
+}
 
 export function NextButton({ nextStep }: NextButtonProps) {
   return (
     <div>
-      <button onClick={nextStep} className="bg-accent mx-auto text-background w-[14rem] flex justify-center py-1 cursor-pointer hover:bg-primary hover:border rounded-md">
+      <button onClick={nextStep} className="bg-accent mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer hover:bg-primary hover:text-white rounded-md">
         Next
       </button>
     </div>
+  );
+}
+
+export function PrevButton({ prevStep }: PrevButtonProps) {
+  return (
+    <div>
+      <button onClick={prevStep} className="text-accent mx-auto  flex justify-center py-1 cursor-pointer hover:text-primary  rounded-md">
+        <ArrowLeftCircleIcon width={30}/>
+      </button>
+    </div>
+  );
+}
+
+export function SendOtpButton({handleSendOtp}: OtpButtonProps) {
+  return (
+    <div>
+      <button onClick={handleSendOtp} className="bg-accent mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer hover:bg-primary hover:text-white rounded-md">
+        Send OTP
+      </button>
+    </div>
+  );
+}
+
+
+export function SubmitButton({handleSubmit}: SubmitButtonProps) {
+  return (
+    <div>
+      <button onClick={handleSubmit} className="bg-success mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer  hover:text-white rounded-md">
+        Submit
+      </button>
+    </div>
+  );
+}
+
+export function RedStar() {
+  return (
+        <span className="text-danger">*</span>
   );
 }
 

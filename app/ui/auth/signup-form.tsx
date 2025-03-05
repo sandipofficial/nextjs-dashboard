@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import StepOne from "./signup/StepOne";
-import StepTwo from "./signup/StepTwo";
-import StepThree from "./signup/StepThree";
+import MultiStepForm from "./signup/MultiStepPage";
 
 export default function SignupPage() {
   const [step, setStep] = useState(1);
@@ -38,17 +36,9 @@ export default function SignupPage() {
   const prevStep = () => setStep((prev) => prev - 1);
 
   return (
-    <div className="flex pt-8 min-h-[80vh] w-[60vw] mx-auto justify-center bg-transparent rounded-lg shadow-xl border border-primary p-4">
+    <div className="flex pt-8 min-h-[80vh] w-[45vw] mx-auto justify-center bg-background rounded-lg shadow-2xl border border-primary p-4">
       <div className="w-full max-w-md">
-        {step === 1 && (
-          <StepOne formData={formData} handleChange={handleChange} nextStep={nextStep} />
-        )}
-        {step === 2 && (
-          <StepTwo formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />
-        )}
-        {step === 3 && (
-          <StepThree formData={formData} handleFileChange={handleFileChange} prevStep={prevStep} />
-        )}
+        <MultiStepForm />
       </div>
     </div>
   );

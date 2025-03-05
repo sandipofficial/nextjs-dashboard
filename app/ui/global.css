@@ -18,7 +18,15 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .input-field {
-  @apply w-full p-2 border border-primary rounded-md focus:outline-none focus:border-accenthover transition;
+  @apply w-full placeholder:text-[13px] p-2 border border-primary rounded-md focus:outline-none focus:border-accenthover transition;
 }
 
 
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Webkit (Chrome, Safari) */
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;  /* Hide scrollbar for IE & Edge */
+  scrollbar-width: none;      /* Hide scrollbar for Firefox */
+}
