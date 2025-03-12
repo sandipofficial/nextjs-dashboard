@@ -4,9 +4,9 @@ import {
   PrevButton,
   RedStar,
   SendOtpButton,
-  SubmitButton,
 } from "../buttons";
 import Image from "next/image";
+import SubmitButton from "../buttons";
 import {
   InputOTP,
   InputOTPGroup,
@@ -100,7 +100,7 @@ export default function MultiStepForm() {
   };
 
   return (
-    <div className="flex flex-col  w-[100%] mx-auto space-y-4">
+    <div className="flex flex-col mx-auto space-y-4">
       {step === 1 && (
         <>
           <h2 className="text-2xl font-semibold text-center text-primary">
@@ -339,7 +339,7 @@ export default function MultiStepForm() {
               </InputOTP>
             </div>
             <CountdownTimer />
-            <SubmitButton handleSubmit={handleSubmit} />
+            <SubmitButton text="submit"/>
           </div>
         </>
       )}
@@ -368,7 +368,7 @@ export default function MultiStepForm() {
               />
             )}
             <div className="flex justify-between">
-              <SubmitButton handleSubmit={handleSubmit} />
+              <SubmitButton text="submit"/>
             </div>
           </div>
         </>

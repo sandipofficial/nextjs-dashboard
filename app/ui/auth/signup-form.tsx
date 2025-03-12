@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import MultiStepForm from "./signup/MultiStepPage";
+import StepsProgress from "./signup/StepsProgress";
 
 export default function SignupPage() {
   const [step, setStep] = useState(1);
@@ -36,8 +37,9 @@ export default function SignupPage() {
   const prevStep = () => setStep((prev) => prev - 1);
 
   return (
-    <div className="flex pt-8 min-h-[80vh] w-[45vw] mx-auto justify-center bg-background rounded-lg shadow-2xl border border-primary p-4">
-      <div className="w-full max-w-md">
+    <div className="flex pt-8 min-h-[80vh] w-[65vw] mx-auto justify-center bg-background rounded-lg shadow-2xl border border-primary p-4">
+      <div className="w-full  flex justify-between items-center">
+        <StepsProgress/>
         <MultiStepForm />
       </div>
     </div>

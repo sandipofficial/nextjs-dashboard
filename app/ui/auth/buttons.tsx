@@ -1,4 +1,9 @@
-import { ArrowLeftCircleIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
+"use client";
+
+import {
+  ArrowLeftCircleIcon,
+  ArrowRightStartOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 export function Signup() {
@@ -28,21 +33,24 @@ export type NextButtonProps = {
 };
 
 export type PrevButtonProps = {
-  prevStep: () => void
+  prevStep: () => void;
 };
 
 export type OtpButtonProps = {
-  handleSendOtp: () => void
-}
+  handleSendOtp: () => void;
+};
 
-export type SubmitButtonProps = {
-  handleSubmit: () => void
-}
+// export type SubmitButtonProps = {
+//   handleSubmit: () => void
+// }
 
 export function NextButton({ nextStep }: NextButtonProps) {
   return (
     <div>
-      <button onClick={nextStep} className="bg-accent mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer hover:bg-primary hover:text-white rounded-md">
+      <button
+        onClick={nextStep}
+        className="bg-accent mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer hover:bg-primary hover:text-white rounded-md"
+      >
         Next
       </button>
     </div>
@@ -52,38 +60,65 @@ export function NextButton({ nextStep }: NextButtonProps) {
 export function PrevButton({ prevStep }: PrevButtonProps) {
   return (
     <div>
-      <button onClick={prevStep} className="text-accent mx-auto  flex justify-center py-1 cursor-pointer hover:text-primary  rounded-md">
-        <ArrowLeftCircleIcon width={30}/>
+      <button
+        onClick={prevStep}
+        className="text-accent mx-auto  flex justify-center py-1 cursor-pointer hover:text-primary  rounded-md"
+      >
+        <ArrowLeftCircleIcon width={30} />
       </button>
     </div>
   );
 }
 
-export function SendOtpButton({handleSendOtp}: OtpButtonProps) {
+export function SendOtpButton({ handleSendOtp }: OtpButtonProps) {
   return (
     <div>
-      <button onClick={handleSendOtp} className="bg-accent mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer hover:bg-primary hover:text-white rounded-md">
+      <button
+        onClick={handleSendOtp}
+        className="bg-accent mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer hover:bg-primary hover:text-white rounded-md"
+      >
         Send OTP
       </button>
     </div>
   );
 }
 
+// export function SubmitButton({handleSubmit}: SubmitButtonProps) {
+//   return (
+//     <div>
+//       <button onClick={handleSubmit} className="bg-success mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer  hover:text-white rounded-md">
+//         Submit
+//       </button>
+//     </div>
+//   );
+// }
 
-export function SubmitButton({handleSubmit}: SubmitButtonProps) {
+export function RedStar() {
+  return <span className="text-danger">*</span>;
+}
+
+import { useFormStatus } from "react-dom";
+
+interface SubmitButtonProps {
+  text: string;
+}
+export default function SubmitButton({ text }: SubmitButtonProps) {
+  const { pending } = useFormStatus();
   return (
-    <div>
-      <button onClick={handleSubmit} className="bg-success mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer  hover:text-white rounded-md">
-        Submit
+    <div className=" w-[130px] h-[40px] text-center">
+      <button
+        type="submit"
+        className={`bg-teal-500 outline-none h-[40px] w-[130px] rounded-full border-[3px] border-gray-400 text-tomato tracking-widest font-bold text-xs transition-all duration-300 ease-in-out 
+          ${
+            pending
+              ? "w-[40px] h-[40px] animate-spin text-transparent bg-green-500" 
+              : "hover:bg-teal-600 hover:text-gray-50 hover:border-accent-600 border-[10px] active:tracking-widest"
+          }
+        `}
+        disabled={pending}
+      >
+        {pending ? "" : text}
       </button>
     </div>
   );
 }
-
-export function RedStar() {
-  return (
-        <span className="text-danger">*</span>
-  );
-}
-
-

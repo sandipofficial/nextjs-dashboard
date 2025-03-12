@@ -30,3 +30,9 @@ input[type='number']::-webkit-outer-spin-button {
   -ms-overflow-style: none;  /* Hide scrollbar for IE & Edge */
   scrollbar-width: none;      /* Hide scrollbar for Firefox */
 }
+
+
+body {
+  background-color: #e3edea; 
+  color: #333; 
+}

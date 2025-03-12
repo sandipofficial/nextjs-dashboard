@@ -12,8 +12,8 @@ const config: Config = {
         '13': 'repeat(13, minmax(0, 1fr))',
       },
       colors: {
-        background: "#EAEAEA",
-        primary: "#AD974F",
+        background: "#fffff",
+        primary: "rgb(150 173 194 / var(--tw-border-opacity, 1))",
         secondary: "#231f20",
         accent: "#8E793E",
         accenthover: "#c9a94d",
