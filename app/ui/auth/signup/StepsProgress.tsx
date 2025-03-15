@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import path from "path";
 import { useEffect, useState } from "react";
-import { SignupRoutes } from "@/types";
+import { LandingPageRoutes, SignupRoutes } from "@/types";
 import { MoveLeftIcon } from "lucide-react";
 
 const steps = [
@@ -25,7 +25,7 @@ const steps = [
     route: "step-three",
     link: SignupRoutes.OTP_DEATAILS,
   },
-  { title: "Review", route: "review", link: SignupRoutes.PROFILE_DEATILS },
+  { title: "Review", route: "review", link: '/' },
 ];
 
 export default function StepNavigation() {
@@ -38,7 +38,7 @@ export default function StepNavigation() {
   }, [currentPath]);
 
   return (
-    <div className=" text-slate-400 flex flex-col items-center bg-white h-[480px] rounded-md shadow-xl w-[260px] p-5">
+    <div className=" text-slate-400 flex flex-col items-center bg-white min-h-[80vh]  rounded-md shadow-xl w-[260px] p-5">
       {/* back button */}
       <Link
         href={steps[currentStep - 1]?.link || steps[0].link}
@@ -69,7 +69,7 @@ export default function StepNavigation() {
 
         {steps.map((step, i) => (
           <Link
-            href={step.link}
+            href={steps[currentStep - 1]?.link || steps[0].link}
             key={step.link}
             className={clsx(
               "group z-20 flex items-center gap-3 text-xl px-2 py-1 rounded-md ",

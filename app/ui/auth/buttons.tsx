@@ -36,9 +36,7 @@ export type PrevButtonProps = {
   prevStep: () => void;
 };
 
-export type OtpButtonProps = {
-  handleSendOtp: () => void;
-};
+
 
 // export type SubmitButtonProps = {
 //   handleSubmit: () => void
@@ -70,28 +68,7 @@ export function PrevButton({ prevStep }: PrevButtonProps) {
   );
 }
 
-export function SendOtpButton({ handleSendOtp }: OtpButtonProps) {
-  return (
-    <div>
-      <button
-        onClick={handleSendOtp}
-        className="bg-accent mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer hover:bg-primary hover:text-white rounded-md"
-      >
-        Send OTP
-      </button>
-    </div>
-  );
-}
 
-// export function SubmitButton({handleSubmit}: SubmitButtonProps) {
-//   return (
-//     <div>
-//       <button onClick={handleSubmit} className="bg-success mx-auto text-background w-[10rem] flex justify-center py-1 cursor-pointer  hover:text-white rounded-md">
-//         Submit
-//       </button>
-//     </div>
-//   );
-// }
 
 export function RedStar() {
   return <span className="text-danger">*</span>;

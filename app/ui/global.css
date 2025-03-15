@@ -17,6 +17,18 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+
+
 .input-field {
   @apply w-full placeholder:text-[13px] p-2 border border-primary rounded-md focus:outline-none focus:border-accenthover transition;
 }

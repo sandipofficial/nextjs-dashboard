@@ -32,7 +32,7 @@ const defaultDeal: NewSignUpInitialValuesType = {
 
 
 
-const LOCAL_STORAGE_KEY = 'multi-page-form-demo-newSignUpData';
+const LOCAL_STORAGE_KEY = 'multi-page-form-data';
 
 type SignupContextType = {
   newSignUpData: NewSignUpInitialValuesType;

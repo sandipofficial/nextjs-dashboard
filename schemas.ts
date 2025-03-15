@@ -8,10 +8,26 @@ export const stepOneSchema = z
     gender: z.enum(["Male", "Female", "Other"], {
       errorMap: () => ({ message: "Please select a valid gender." }),
     }),
-    password: z.string().min(6, "Password must be at least 6 characters long."),
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters long.")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+      .regex(/[0-9]/, "Password must contain at least one number.")
+      .regex(
+        /[\W_]/,
+        "Password must contain at least one special character (e.g. @, #, $, %, etc.)."
+      ),
     confirmPassword: z
       .string()
-      .min(6, "Confirm Password must be at least 6 characters long."),
+      .min(8, "Confirm Password must be at least 8 characters long.")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+      .regex(/[0-9]/, "Password must contain at least one number.")
+      .regex(
+        /[\W_]/,
+        "Password must contain at least one special character (e.g. @, #, $, %, etc.)."
+      ),
     dateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), {
       message: "Please enter a valid date of birth.",
     }),
@@ -34,15 +50,16 @@ export const stepTwoSchema = z.object({
   address_city: z.string().min(1, "City is required"),
   address_state: z.string().min(1, "State is required"),
   address_country: z.string().min(1, "Country is required"),
-  address_zipCode: z.string().min(5, "Zip code must be at least 5 characters long"),
+  address_zipCode: z
+    .string()
+    .min(5, "Zip code must be at least 5 characters long"),
 });
 
 export const stepThreeSchema = z.object({
   mobileNumber: z
     .string()
     .min(10, "Mobile number must be at least 10 digits")
-    .max(15, "Mobile number must be at most 15 digits")
-    .regex(/^\d+$/, "Mobile number must contain only digits"),
+    .max(15, "Mobile number must be at most 15 digits"),
   otp: z
     .string()
     .length(6, "OTP must be exactly 6 digits")

@@ -1,14 +1,14 @@
 'use server';
-import { stepTwoSchema } from '@/schemas';
+import { stepThreeSchema } from '@/schemas';
 import { SignupRoutes, FormErrors } from '@/types';
 import { redirect } from 'next/navigation';
 
-export const stepTwoFormAction = async (
+export const stepThreeFormAction = async (
   prevState: FormErrors | undefined,
   formData: FormData
 ): Promise<FormErrors | undefined> => {
   const data = Object.fromEntries(formData.entries());
-  const validated = stepTwoSchema.safeParse(data);
+  const validated = stepThreeSchema.safeParse(data);
   if (!validated.success) {
     const errors = validated.error.issues.reduce((acc: FormErrors, issue) => {
       const path = issue.path[0] as string;
@@ -18,5 +18,5 @@ export const stepTwoFormAction = async (
     return errors;
   }
 
-  redirect(SignupRoutes.OTP_DEATAILS);
+  redirect(SignupRoutes.REVIEW);
 };

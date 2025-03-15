@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSignupContext } from "@/contexts/SignupContext";
 import { RedStar } from "./buttons";
-import { Eye, EyeOff } from "lucide-react";
+import { AlertCircle, Eye, EyeOff } from "lucide-react";
 import { Country, State, City } from "country-state-city";
 
 interface InputProps {
@@ -16,6 +16,7 @@ interface InputProps {
   min?: number;
   max?: number;
   errorMsg?: string;
+  placeholder?: string;
 }
 
 export default function Input({
@@ -28,7 +29,8 @@ export default function Input({
   min,
   max,
   description,
-  errorMsg,
+  placeholder,
+  errorMsg ,
 }: InputProps) {
   const { updateNewDealDetails, newSignUpData } = useSignupContext();
   const [showPassword, setShowPassword] = useState(false);
@@ -36,6 +38,7 @@ export default function Input({
   // Track selected country and state with local storage
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedState, setSelectedState] = useState<string>("");
+  const [phoneCode, setPhoneCode] = useState<string>("+91"); // Default to India
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -53,6 +56,11 @@ export default function Input({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+
+    
+
+    console.log(errorMsg)
+
     updateNewDealDetails({ [name]: value });
 
     if (typeof window !== "undefined") {
@@ -68,21 +76,29 @@ export default function Input({
     if (name === "address_state") {
       setSelectedState(value);
     }
+
+    if (name === "phone_code") {
+      setPhoneCode(value);
+    }
   };
 
-  // Fetch all countries
+  // Fetch all countries for phone codes
   const countries = Country.getAllCountries();
-
+  const phoneCodes = countries.map((country) => ({
+    code: country.isoCode,
+    dialCode: `+${country.phonecode}`,
+    name: country.name,
+  }));
+  
   // Fetch states based on selected country
   const states = selectedCountry
     ? State.getStatesOfCountry(selectedCountry)
     : [];
-console.log(selectedState)
   // Fetch cities based on selected state
   const cities = selectedState
     ? City.getCitiesOfState(selectedCountry, selectedState)
     : [];
-
+  
   // Mapping for select options
   const selectOptions: Record<string, { value: string; text: string }[]> = {
     gender: [
@@ -112,10 +128,20 @@ console.log(selectedState)
         text: city.name,
       })),
     ],
+    countryCode: [
+      { value: "", text: "Select Code" },
+      ...phoneCodes.map((code) => ({
+        value: code.dialCode, // Correctly map the value to the dial code
+        text: `${code.dialCode} (${code.name})`, // Show dial code and country name
+        // Combine dialCode and isoCode to create a unique key
+        key: `${code.dialCode}-${code.code}`,
+      })),
+    ],
   };
+  
 
   return (
-    <div className=" ">
+    <div>
       {/* Label Section */}
       <label className="block text-black text-sm text-slate-500" htmlFor={id}>
         {label} {required ? <RedStar /> : ""}
@@ -124,41 +150,52 @@ console.log(selectedState)
         )}
       </label>
 
-      {/* Conditional Rendering for Input vs. Select */}
+      {/* Select Field */}
       {type === "select" && selectOptions[id] ? (
-        <select
-          id={id}
-          name={id}
-          className="w-full h-10 rounded-md border-2 border-slate-300 text-sm text-slate-900 focus:border-slate-400 focus:ring-1 focus:ring-slate-300"
-          onChange={handleInputChange}
-          value={newSignUpData?.[id as keyof typeof newSignUpData] ?? ""}
-        >
-          {selectOptions[id].map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.text}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <div className="relative">
-          <input
-            className={`w-full h-10 rounded-md border-2 text-slate-900 pr-4 ${
+        <div className="relative" title={errorMsg}>
+          <select
+            id={id}
+            name={id}
+            className={`w-full h-10 rounded-md border-2 text-sm text-slate-900 pr-4 ${
               errorMsg
                 ? "border-red-500"
                 : "border-slate-300 focus:border-slate-400 focus:ring-1 focus:ring-slate-300"
             }`}
-            type={type === "password" ? (showPassword ? "text" : "password") : type}
+            onChange={handleInputChange}
+            value={newSignUpData?.[id as keyof typeof newSignUpData] ?? ""}
+          >
+            {selectOptions[id].map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.text}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : (
+        <div className="relative" title={errorMsg}>
+          <input
+            className={`w-full h-10 rounded-md border-2 text-slate-900 pr-4 placeholder:text-xs ${
+              errorMsg
+                ? "border-red-500 placeholder:text-red-500 "
+                : "border-slate-300 focus:border-slate-400 focus:ring-1 focus:ring-slate-300"
+            }`}
+            type={
+              type === "password" ? (showPassword ? "text" : "password") : type
+            }
             name={id}
             id={id}
             required={required}
             pattern={pattern}
+            placeholder={errorMsg ? errorMsg : placeholder}
             minLength={minLength}
             min={min}
             max={max}
             onChange={handleInputChange}
-            defaultValue={newSignUpData?.[id as keyof typeof newSignUpData] ?? ""}
+            defaultValue={
+              newSignUpData?.[id as keyof typeof newSignUpData] ?? ""
+            }
           />
-          {type === "password" && (
+          {type === "password" && !errorMsg && (
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
@@ -169,9 +206,6 @@ console.log(selectedState)
           )}
         </div>
       )}
-
-      {/* Error Message */}
-      {errorMsg && <span className="text-red-500 text-sm ">{errorMsg}</span>}
     </div>
   );
 }

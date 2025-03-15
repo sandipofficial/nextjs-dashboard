@@ -1,6 +1,7 @@
-import React from 'react';
-import StepNavigation from '@/app/ui/auth/signup/StepsProgress';
-import { SignupContextProvider } from '@/contexts/SignupContext';
+import React, { Suspense } from "react";
+import StepNavigation from "@/app/ui/auth/signup/StepsProgress";
+import { SignupContextProvider } from "@/contexts/SignupContext";
+import DashboardSkeleton from "@/app/ui/skeletons";
 
 export default function DealsLayout({
   children,
@@ -16,9 +17,11 @@ export default function DealsLayout({
 
       <div className="w-screen h-screen justify-center items-center gap-x-10 ml-18 relative items-center  flex ">
         <StepNavigation />
-        <SignupContextProvider>
-          <div className="w-[620px]">{children}</div>
-        </SignupContextProvider>
+        <Suspense fallback={<DashboardSkeleton/>}>
+          <SignupContextProvider>
+            <div className="w-[620px]">{children}</div>
+          </SignupContextProvider>
+        </Suspense>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { lusitana } from "./ui/fonts";
 import Image from "next/image";
 import Header from "./ui/auth/header";
+import { LandingPageRoutes } from "@/types";
 
 export default function Page() {
   return (
@@ -40,13 +41,13 @@ export default function Page() {
           </p>
           <div className="flex gap-3 mt-6">
             <Link
-              href="/auth/login"
+              href= {LandingPageRoutes.LOGIN}
               className="flex items-center gap-5 rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
             >
               <span>Log in</span>
             </Link>
             <Link
-              href="/auth/signup"
+              href={LandingPageRoutes.SIGN_UP}
               className="flex items-center gap-5 rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
             >
               <span>Sign Up</span>

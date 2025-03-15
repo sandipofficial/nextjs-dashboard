@@ -16,16 +16,17 @@ export default function StepOneForm() {
   const nextStep = () => {};
 
   return (
-    <form action={formAction} className=" flex flex-col p-3  items-center bg-white shadow-xl rounded-md">
+    <form action={formAction} className="relative flex flex-col p-3 min-h-[80vh] items-center bg-white shadow-xl rounded-md">
       <div className="text-2xl font-semibold text-center text-primary pb-2 pt-1">
         Basic Details
       </div>
       <div className="bg-primary w-[32rem] my-3 h-[2px] "></div>
-      <div className="grid grid-cols-2 w-[32rem] gap-x-6 gap-y-3 scroll-hidden pb-2">
+      <div className="grid grid-cols-2 w-[32rem] gap-x-6 gap-y-4 scroll-hidden pb-2">
         <Input
           label="First Name"
           id="firstName"
           type="text"
+          placeholder="Enter your first name"
           errorMsg={serverErrors?.firstName}
         />
 
@@ -33,6 +34,7 @@ export default function StepOneForm() {
           label="Last Name"
           id="lastName"
           type="text"
+          placeholder="Enter your last name"
           errorMsg={serverErrors?.lastName}
         />
 
@@ -40,6 +42,7 @@ export default function StepOneForm() {
           label="Email Id"
           id="email"
           type="email"
+          placeholder="Enter your email"
           errorMsg={serverErrors?.email}
         />
 
@@ -47,6 +50,7 @@ export default function StepOneForm() {
           label="Gender"
           id="gender"
           type="select"
+          placeholder="Select your gender"
           errorMsg={serverErrors?.gender}
         />
 
@@ -54,6 +58,7 @@ export default function StepOneForm() {
           label="Password"
           id="password"
           type="password"
+          placeholder="Enter your password"
           errorMsg={serverErrors?.password}
         />
 
@@ -61,6 +66,7 @@ export default function StepOneForm() {
           label="Confirm Password"
           id="confirmPassword"
           type="password"
+          placeholder="Confirm your password"
           errorMsg={serverErrors?.confirmPassword}
         />
 
@@ -68,6 +74,7 @@ export default function StepOneForm() {
           label="Date of Birth"
           id="dateOfBirth"
           type="date"
+          placeholder="Select your date of birth"
           errorMsg={serverErrors?.dateOfBirth}
         />
 
@@ -75,10 +82,11 @@ export default function StepOneForm() {
           label="Mobile Number"
           id="mobileNumber"
           type="text"
+          placeholder="Enter your mobile number"
           errorMsg={serverErrors?.mobileNumber}
         />
       </div>
-      <div className="">
+      <div className="absolute bottom-10">
         <SubmitButton text="Next" />
       </div>
     </form>
