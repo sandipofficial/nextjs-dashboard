@@ -1,10 +1,10 @@
 "use client";
-import Input from "@/app/ui/auth/Input";
+import Input from "@/app/ui/auth/signup/Input";
 import { stepThreeFormAction } from "./actions";
 import { FormErrors } from "@/types";
 import SubmitButton from "@/app/ui/auth/buttons";
 import { SendOtpButton, VerifyOtpButton } from "@/app/ui/auth/signup/OtpButton";
-import React from "react";
+import React, { useState } from "react";
 
 const initialState: FormErrors = {};
 
@@ -13,6 +13,8 @@ export default function StepThreeForm() {
     stepThreeFormAction,
     initialState
   );
+
+  const [verified, setVerified] = useState(false);
 
   return (
     <form
@@ -41,11 +43,9 @@ export default function StepThreeForm() {
           />
         </div>
         <div>
-        <SendOtpButton />
+          <SendOtpButton />
+        </div>
       </div>
-      </div>
-
-      
 
       <div className="grid grid-cols-2 w-[32rem] gap-x-6 gap-y-4 scroll-hidden pb-2">
         <div className="col-span-2 w-full">
@@ -58,14 +58,12 @@ export default function StepThreeForm() {
           />
         </div>
         <div>
-        <VerifyOtpButton />
-      </div>
+          <VerifyOtpButton setVerified={setVerified} />
+        </div>
       </div>
 
-      
-
-      <div className="absolute bottom-10">
-        <SubmitButton text="Next" />
+      <div className={`absolute bottom-10 `}>
+        <SubmitButton text="Next" verified={verified} />
       </div>
     </form>
   );

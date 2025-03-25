@@ -4,7 +4,12 @@ export interface FormErrors {
 
   export enum LandingPageRoutes{
     LOGIN = '/auth/login',
-    SIGN_UP = '/auth/signup'
+    SIGN_UP = '/auth/signup',
+    DASHBOARD = '/dashboard',
+    HOMEPAGE = '/',
+    RESET_PASSWORD_REQUEST = '/auth/login/reset-password/request',
+    RESET_PASSWORD = '/auth/login/reset-password',
+    FORGOT_USER = '/auth/login/forgot-user'
   }
   
   export enum SignupRoutes {

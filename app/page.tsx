@@ -12,13 +12,13 @@ export default function Page() {
       <Header/>
       <div className="relative w-full h-[90vh] flex items-center justify-center group overflow-hidden">
         {/* Background Image */}
-        <Image
+        {/* <Image
           src="/hero-desktop.png"
           width={650}
           height={160}
           className="absolute z-0 mx-auto"
           alt="Finance Dashboard Background"
-        />
+        /> */}
 
         {/* Hover Glow Effect */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

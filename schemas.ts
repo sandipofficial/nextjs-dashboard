@@ -93,3 +93,76 @@ export type NewSignUpType = z.infer<typeof newSignUpSchema>;
 export type NewSignUpInitialValuesType = z.infer<
   typeof newSignUpInitialValuesSchema
 >;
+
+// Login Validation Schema
+export const LoginSchema = z.object({
+  email: z.string().email({ message: "Invalid email format" }),
+  password: z
+  .string()
+  .min(8, "Confirm Password must be at least 8 characters long.")
+  .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
+  .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+  .regex(/[0-9]/, "Password must contain at least one number.")
+  .regex(
+    /[\W_]/,
+    "Password must contain at least one special character (e.g. @, #, $, %, etc.)."
+  ),
+});
+
+// Login Initial Values Schema (for form default values)
+export const LoginInitialValuesSchema = z.object({
+  email: z.string(),
+  password: z
+    .string()
+    .min(8, "Confirm Password must be at least 8 characters long.")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+    .regex(/[0-9]/, "Password must contain at least one number.")
+    .regex(
+      /[\W_]/,
+      "Password must contain at least one special character (e.g. @, #, $, %, etc.)."
+    ),
+});
+
+export type LoginType = z.infer<typeof LoginSchema>;
+export type LoginInitialValuesType = z.infer<typeof LoginInitialValuesSchema>;
+
+
+export const RequestPasswordResetSchema = z.object({
+  email: z.string().email("Invalid email format"),
+});
+
+// export type RequestPasswordResetType = z.infer<typeof RequestPasswordResetSchema>;
+
+
+export const ResetPasswordSchema = z.object({
+  token: z.string().min(1, "Token is required"), // Ensure token is provided
+  email: z.string().email("Invalid email format"), // Ensure email is valid
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .max(32, "Password cannot exceed 32 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+    .regex(/[0-9]/, "Password must contain at least one number")
+    .regex(/[\W_]/, "Password must contain at least one special character"),
+  
+  confirmPassword: z
+    .string()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+
+export const otpVerificationSchema = z.object({
+  mobileNumber: z
+    .string()
+    .min(10, "Mobile number must be at least 10 digits")
+    .max(15, "Mobile number must be at most 15 digits"),
+  otp: z
+    .string()
+    .length(6, "OTP must be exactly 6 digits")
+    .regex(/^\d+$/, "OTP must contain only digits"),
+});
+

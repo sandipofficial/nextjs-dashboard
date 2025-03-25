@@ -1,5 +1,5 @@
 "use client";
-import Input from "@/app/ui/auth/Input";
+import Input from "@/app/ui/auth/signup/Input";
 import { stepOneFormAction } from "./actions";
 import { FormErrors } from "@/types";
 import SubmitButton from "@/app/ui/auth/buttons";
@@ -13,10 +13,11 @@ export default function StepOneForm() {
     initialState
   );
 
-  const nextStep = () => {};
-
   return (
-    <form action={formAction} className="relative flex flex-col p-3 min-h-[80vh] items-center bg-white shadow-xl rounded-md">
+    <form
+      action={formAction}
+      className="relative flex flex-col p-3 min-h-[80vh] items-center bg-white shadow-xl rounded-md"
+    >
       <div className="text-2xl font-semibold text-center text-primary pb-2 pt-1">
         Basic Details
       </div>
@@ -87,7 +88,7 @@ export default function StepOneForm() {
         />
       </div>
       <div className="absolute bottom-10">
-        <SubmitButton text="Next" />
+        <SubmitButton text="Next" verified={true} />
       </div>
     </form>
   );

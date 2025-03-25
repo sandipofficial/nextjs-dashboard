@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSignupContext } from "@/contexts/SignupContext";
-import { RedStar } from "./buttons";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { RedStar } from "../buttons";
 import { AlertCircle, Eye, EyeOff } from "lucide-react";
 import { Country, State, City } from "country-state-city";
 
@@ -30,9 +30,9 @@ export default function Input({
   max,
   description,
   placeholder,
-  errorMsg ,
+  errorMsg,
 }: InputProps) {
-  const { updateNewDealDetails, newSignUpData } = useSignupContext();
+  const { updateNewSignUpData, newSignUpData } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false);
 
   // Track selected country and state with local storage
@@ -49,7 +49,7 @@ export default function Input({
       if (storedCountry) setSelectedCountry(storedCountry);
       if (storedState) setSelectedState(storedState);
     }
-  }, [updateNewDealDetails]);
+  }, [updateNewSignUpData, newSignUpData]);
 
   // Handle input changes and store them in localStorage
   const handleInputChange = (
@@ -57,11 +57,9 @@ export default function Input({
   ) => {
     const { name, value } = e.target;
 
-    
+    console.log(value);
 
-    console.log(errorMsg)
-
-    updateNewDealDetails({ [name]: value });
+    updateNewSignUpData({ [name]: value });
 
     if (typeof window !== "undefined") {
       localStorage.setItem(name, value);
@@ -89,7 +87,7 @@ export default function Input({
     dialCode: `+${country.phonecode}`,
     name: country.name,
   }));
-  
+
   // Fetch states based on selected country
   const states = selectedCountry
     ? State.getStatesOfCountry(selectedCountry)
@@ -98,7 +96,7 @@ export default function Input({
   const cities = selectedState
     ? City.getCitiesOfState(selectedCountry, selectedState)
     : [];
-  
+
   // Mapping for select options
   const selectOptions: Record<string, { value: string; text: string }[]> = {
     gender: [
@@ -138,7 +136,6 @@ export default function Input({
       })),
     ],
   };
-  
 
   return (
     <div>

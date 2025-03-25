@@ -69,7 +69,7 @@ export default function StepNavigation() {
 
         {steps.map((step, i) => (
           <Link
-            href={steps[currentStep - 1]?.link || steps[0].link}
+            href={steps[i].link}
             key={step.link}
             className={clsx(
               "group z-20 flex items-center gap-3 text-xl px-2 py-1 rounded-md ",

@@ -21,7 +21,7 @@ export function Login() {
   return (
     <Link
       href="/auth/login"
-      className="bg-accent text-background w-[6rem] flex justify-center py-1 cursor-pointer hover:bg-primary hover:border hover:rounded-md "
+      className="bg-teal-500 text-background w-[6rem] flex justify-center py-1 cursor-pointer rounded-md "
     >
       <span>Log in</span>
     </Link>
@@ -78,21 +78,23 @@ import { useFormStatus } from "react-dom";
 
 interface SubmitButtonProps {
   text: string;
+  verified:boolean;
 }
-export default function SubmitButton({ text }: SubmitButtonProps) {
+export default function SubmitButton({ text, verified }: SubmitButtonProps) {
   const { pending } = useFormStatus();
+
   return (
-    <div className=" w-[130px] h-[40px] text-center">
+    <div className="w-[130px] h-[40px] text-center">
       <button
         type="submit"
         className={`bg-teal-500 outline-none h-[40px] w-[130px] rounded-full border-[3px] border-gray-400 text-tomato tracking-widest font-bold text-xs transition-all duration-300 ease-in-out 
           ${
-            pending
-              ? "w-[40px] h-[40px] animate-spin text-transparent bg-green-500" 
+            pending || !verified
+              ? "cursor-not-allowed opacity-50" // Disabled styling
               : "hover:bg-teal-600 hover:text-gray-50 hover:border-accent-600 border-[10px] active:tracking-widest"
           }
         `}
-        disabled={pending}
+        disabled={pending || !verified} // Disabled if pending or not verified
       >
         {pending ? "" : text}
       </button>

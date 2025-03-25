@@ -10,7 +10,10 @@ import {
 import { formatCurrency } from "./utils";
 import { GET } from "../seed/route";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+if (!process.env.POSTGRES_URL) {
+  throw new Error("POSTGRES_URL is not defined in environment variables");
+}
+const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
 export async function updateRevenue() {
   try {
@@ -46,7 +49,6 @@ export async function updateRevenue() {
     console.error("❌ Error updating revenue:", error);
   }
 }
-
 
 export async function fetchRevenue() {
   try {

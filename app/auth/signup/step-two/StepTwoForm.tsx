@@ -1,5 +1,5 @@
 "use client";
-import Input from "@/app/ui/auth/Input";
+import Input from "@/app/ui/auth/signup/Input";
 import { stepTwoFormAction } from "./actions";
 import { FormErrors } from "@/types";
 import SubmitButton from "@/app/ui/auth/buttons";
@@ -25,7 +25,6 @@ export default function StepTwoForm() {
       </div>
       <div className="bg-primary w-[32rem] my-3 h-[2px] "></div>
       <div className="grid grid-cols-2 w-[32rem] gap-x-6 gap-y-4 scroll-hidden pb-2">
-
         <div className="col-span-2 w-full">
           <Input
             label="Street"
@@ -64,7 +63,7 @@ export default function StepTwoForm() {
         />
       </div>
       <div className="absolute bottom-10">
-        <SubmitButton text="Next" />
+        <SubmitButton text="Next" verified={true} />
       </div>
     </form>
   );

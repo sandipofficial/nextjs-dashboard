@@ -3,119 +3,116 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // Change if using a different database
-  url      = env("POSTGRES_URL")
-}
-
-model Role {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  users       User[]
+  provider = "postgresql"
+  url      = env("DIRECT_URL")
 }
 
 model User {
-  id                String        @id @default(uuid())
-  firstName         String
-  lastName          String
-  email             String        @unique
-  passwordHash      String
-  mobileNumber      String
-  initials          String
-  dob               String
-  gender            String?
-  profilePictureUrl String?
-  address           Address?
-  roleId            String
-  role              Role          @relation(fields: [roleId], references: [id])
-  kycStatus         String
-  panNumber         String?
+  id               Int         @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  initials         String
+  dob              DateTime
+  gender           Gender?
+  email            String      @unique
+  passwordHash     String
+  mobileNumber     String      @unique
+  roleId           Int
+  role             Role        @relation(fields: [roleId], references: [id])
+  kycStatus        KYCStatus
+  panNumber        String?
   preferredLanguage String?
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  lastLoginAt       DateTime?
-  isActive          Boolean       @default(true)
-  isVerified        Boolean       @default(false)
-  loginAttempts     Int?
-  bankAccounts      BankAccount[]
-  savedCards        String[]
-
-  // Added missing relations
-  customer Customer?
-  revenues Revenue[]
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  lastLoginAt      DateTime?
+  isActive         Boolean     @default(true)
+  isVerified       Boolean     @default(false)
+  resetToken       String?     @unique
+  resetTokenExpiry DateTime?
+  loginAttempts    Int?
+  bankAccounts     BankAccount[]
+  savedCards       String[]
+  address          Address?
+  customers        Customer[]
+  revenues         Revenue[]
 }
 
 model Address {
-  id         String    @id @default(uuid())
-  street     String
-  city       String
-  state      String
-  country    String
-  zipCode    String
-  user       User?     @relation(fields: [userId], references: [id])
-  userId     String?   @unique // Added @unique
-  customer   Customer? @relation(fields: [customerId], references: [id])
-  customerId String?   @unique // Added @unique
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  street    String
+  city      String
+  state     String
+  country   String
+  zipCode   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Role {
+  id          Int       @id @default(autoincrement())
+  name        RoleName  @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  users       User[]
 }
 
 model BankAccount {
-  id            String   @id @default(uuid())
-  userId        String
-  bankName      String
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  bankName     String
   accountNumber String
-  accountType   String
-  ifscCode      String?
-  currency      String
-  isPrimary     Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  status        String
-  user          User     @relation(fields: [userId], references: [id])
+  accountType  AccountType
+  ifscCode     String?
+  currency     String
+  isPrimary    Boolean
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  status       AccountStatus
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Customer {
-  id          String   @id @default(uuid())
-  userId      String   @unique
+  id          Int      @id @default(autoincrement())
+  userId      Int
   name        String
-  email       String   @unique
+  email       String
   phoneNumber String?
   imageUrl    String?
-  address     Address?
+  addressId   Int?  // Reference to Address model
   gstNumber   String?
   taxId       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  status      String
+  status      String   // "Active" or "Inactive"
 
-  user    User      @relation(fields: [userId], references: [id])
-  Invoice Invoice[]
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoices    Invoice[]  // One-to-Many relationship with Invoice
 }
 
 model Invoice {
-  id             String   @id @default(uuid())
-  customerId     String
+  id             Int      @id @default(autoincrement())
+  customerId     Int
   amount         Float
   currency       String
   date           DateTime
   dueDate        DateTime
-  status         String
+  status         String  // "pending", "paid", "overdue", "canceled"
   taxAmount      Float?
   discountAmount Float?
   totalAmount    Float
-  paymentMethod  String?
+  paymentMethod  String?  // "Credit Card", "Bank Transfer", "UPI", "Cash"
   transactionId  String?
   notes          String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  customer Customer @relation(fields: [customerId], references: [id])
+  customer       Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 }
 
 model Revenue {
-  id              String   @id @default(uuid())
-  userId          String
+  id              Int      @id @default(autoincrement())
+  userId          Int
   month           String
   totalRevenue    Float
   currency        String
@@ -124,8 +121,56 @@ model Revenue {
   pendingInvoices Int
   taxCollected    Float?
   discountGiven   Float?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
-  user User @relation(fields: [userId], references: [id])
+enum Gender {
+  Male
+  Female
+  Other
+}
+
+enum KYCStatus {
+  Pending
+  Verified
+  Rejected
+}
+
+enum RoleName {
+  Customer
+  User
+  Admin
+}
+
+enum AccountType {
+  Savings
+  Checking
+  Business
+}
+
+enum AccountStatus {
+  Active
+  Inactive
+  Closed
+}
+
+enum CustomerStatus {
+  Active
+  Inactive
+}
+
+enum InvoiceStatus {
+  pending
+  paid
+  overdue
+  canceled
+}
+
+enum PaymentMethod {
+  CreditCard
+  BankTransfer
+  UPI
+  Cash
 }

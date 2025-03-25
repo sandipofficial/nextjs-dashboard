@@ -2,7 +2,10 @@ import bcrypt from "bcryptjs";
 import postgres from "postgres";
 import { invoices, customers, revenue } from "../lib/placeholder-data";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+if (!process.env.POSTGRES_URL) {
+  throw new Error("POSTGRES_URL is not defined in environment variables");
+}
+const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
 async function dropTables() {
   await sql`
@@ -191,12 +194,14 @@ export async function GET() {
       await seedRevenue();
     });
 
-    return Response.json({ message: "Database reset and seeded successfully" }, { status: 200 });
+    return Response.json(
+      { message: "Database reset and seeded successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error while resetting database:", error);
     return Response.json({ error }, { status: 500 });
   }
 }
-
 
 GET();

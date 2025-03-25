@@ -6,7 +6,7 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "@/app/lib/firebaseConfig";
-import { useSignupContext } from "@/contexts/SignupContext";
+import { useAuthContext } from "@/contexts/AuthContext";
 import { ConfirmationResult } from "firebase/auth";
 
 declare global {
@@ -21,7 +21,7 @@ export function SendOtpButton() {
   const [message, setMessage] = useState("");
   const [mobileNumber, setMobileNumber] = useState<string>("");
   const [otpSent, setOtpSent] = useState(false);
-  const { updateNewDealDetails, newSignUpData } = useSignupContext();
+  const { updateNewSignUpData, newSignUpData } = useAuthContext();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -30,7 +30,7 @@ export function SendOtpButton() {
         setMobileNumber(storedMobileNumber);
       }
     }
-  }, [updateNewDealDetails]);
+  }, [updateNewSignUpData,newSignUpData]);
 
   useEffect(() => {
     if (!window.recaptchaVerifier) {
@@ -42,8 +42,12 @@ export function SendOtpButton() {
           callback: () => console.log("reCAPTCHA verified"),
         }
       );
+    } else {
+      window.recaptchaVerifier.clear();
+      window.recaptchaVerifier.render();
     }
   }, []);
+  
 
   const handleSendOtp = async () => {
     setLoading(true);
@@ -78,7 +82,11 @@ export function SendOtpButton() {
       <button
         type="button"
         className={`bg-teal-500 h-[40px] w-[130px] rounded-full border-[3px] border-gray-400 text-white font-bold text-xs 
-          ${loading || otpSent ? "bg-gray-400 cursor-not-allowed" : "hover:bg-teal-600"}
+          ${
+            loading || otpSent
+              ? "bg-gray-400 cursor-not-allowed"
+              : "hover:bg-teal-600"
+          }
         `}
         onClick={handleSendOtp}
         disabled={loading || otpSent}
@@ -86,28 +94,30 @@ export function SendOtpButton() {
         {loading ? "Sending..." : otpSent ? "OTP Sent" : "Send OTP"}
       </button>
       <div id="recaptcha-container"></div>
-      {message && <p className="text-xs mt-1 text-green-500">{message}</p>}
+      {/* {message && <p className="text-xs mt-1 text-green-500">{message}</p>} */}
     </div>
   );
 }
 
+interface VerifyOtpButtonProps {
+  setVerified: (value: boolean) => void; // ✅ Properly typed function prop
+}
 
-export function VerifyOtpButton() {
-  const [otp, setOtp] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [otpVerified, setOtpVerified] = useState(false);
-  const { updateNewDealDetails, newSignUpData } = useSignupContext();
-
+export function VerifyOtpButton({ setVerified }: VerifyOtpButtonProps) {
+  const [otp, setOtp] = useState<string>(""); // ✅ Explicit string type
+  const [loading, setLoading] = useState<boolean>(false); // ✅ Explicit boolean type
+  const [message, setMessage] = useState<string>(""); // ✅ Explicit string type
+  const [otpVerified, setOtpVerified] = useState<boolean>(false); // ✅ Explicit boolean type
+  const { updateNewSignUpData, newSignUpData } = useAuthContext();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedOtp = newSignUpData.otp;
+      const storedOtp = newSignUpData?.otp;
       if (storedOtp) {
         setOtp(storedOtp);
       }
     }
-  }, [updateNewDealDetails]);
+  }, [updateNewSignUpData, newSignUpData]);
 
   const handleVerifyOtp = async () => {
     setLoading(true);
@@ -120,12 +130,15 @@ export function VerifyOtpButton() {
     }
 
     try {
-      const confirmationResult: ConfirmationResult = window.confirmationResult;
+      const confirmationResult = (window as any)
+        .confirmationResult as ConfirmationResult;
       const result = await confirmationResult.confirm(otp);
 
       if (result.user) {
         setMessage("OTP Verified Successfully!");
         setOtpVerified(true);
+        setVerified(true); // ✅ Enable Submit Button
+        
       }
     } catch (error) {
       setMessage("Invalid OTP. Please try again.");
@@ -138,18 +151,22 @@ export function VerifyOtpButton() {
   return (
     <div>
       <div>
-      <button
-        type="button"
-        className={`ml-2 bg-blue-500 h-[40px] w-[130px] rounded-full border-[3px] border-gray-400 text-white font-bold text-xs 
-          ${loading || otpVerified ? "bg-gray-400 cursor-not-allowed" : "hover:bg-blue-600"}
-        `}
-        onClick={handleVerifyOtp}
-        disabled={loading || otpVerified}
-      >
-        {loading ? "Verifying..." : otpVerified ? "Verified" : "Verify OTP"}
-      </button>
+        <button
+          type="button"
+          className={`ml-2 bg-blue-500 h-[40px] w-[130px] rounded-full border-[3px] border-gray-400 text-white font-bold text-xs 
+            ${
+              loading || otpVerified
+                ? "bg-gray-400 cursor-not-allowed"
+                : "hover:bg-blue-600"
+            }
+          `}
+          onClick={handleVerifyOtp}
+          disabled={loading || otpVerified }
+        >
+          {loading ? "Verifying..." : otpVerified ? "Verified" : "Verify OTP"}
+        </button>
       </div>
-      {message && <p className="text-xs mt-1 text-green-500">{message}</p>}
+      {/* {message && <p className="text-xs mt-1 text-green-500">{message}</p>} */}
     </div>
   );
 }
