@@ -66,7 +66,7 @@ export function SendOtpButton() {
         `+91${mobileNumber}`,
         appVerifier
       );
-      window.confirmationResult = confirmationResult;
+      (window as any).confirmationResult  = confirmationResult;
       setMessage("OTP Sent! Check your phone.");
       setOtpSent(true);
     } catch (error) {
@@ -129,6 +129,9 @@ export function VerifyOtpButton({ setVerified }: VerifyOtpButtonProps) {
       return;
     }
 
+    // Debugging: Log the confirmationResult before using it
+  console.log("Checking confirmationResult:", (window as any).confirmationResult);
+  
     try {
       const confirmationResult = (window as any)
         .confirmationResult as ConfirmationResult;

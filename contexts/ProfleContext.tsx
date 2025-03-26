@@ -10,11 +10,13 @@ export type Profile = {
   initials: string;
   mobileNumber: string;
   gender: string | null;
-  dob: Date;
+  dob: string | null;
   isActive: boolean;
   isVerified: boolean;
   role: string;
   lastLoginAt: string | null;
+  kycStatus: string;
+  country: string | null;
 };
 
 interface ProfileContextType {

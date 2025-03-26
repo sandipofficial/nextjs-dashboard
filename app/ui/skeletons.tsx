@@ -1,6 +1,6 @@
 // Loading animation
 const shimmer =
-  'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
+  "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent";
 
 export function CardSkeleton() {
   return (
@@ -211,6 +211,134 @@ export function InvoicesTableSkeleton() {
               <TableRowSkeleton />
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ProfileNameSkeleton() {
+  return (
+    <div className="relative flex items-center gap-2 border p-1 rounded-lg min-w-36 overflow-hidden">
+      {/* Profile Initials Skeleton */}
+      <div className="relative w-10 h-10 rounded-full bg-gray-300 overflow-hidden">
+        <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+      </div>
+
+      {/* Profile Name Skeleton */}
+      <div className="flex flex-col gap-1">
+        <div className="relative w-20 h-4 bg-gray-300 rounded-md overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function KycInfoSkeleton() {
+  return (
+    <div className="relative border p-1.5 rounded-lg min-w-24 overflow-hidden">
+      {/* KYC Status Label Skeleton */}
+      <div className="relative w-18 h-4 bg-gray-300 rounded-md overflow-hidden mb-1">
+        <div className="absolute inset-0  bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+      </div>
+
+      {/* KYC Status Indicator */}
+      <div className="flex gap-1 items-center">
+        <div className="relative w-4 h-4 rounded-full bg-gray-300 overflow-hidden">
+          <div className="absolute inset-0 animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+        </div>
+        <div className="relative w-14 h-3 bg-gray-300 rounded-md overflow-hidden">
+          <div className="absolute inset-0 animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ProfileSkeleton() {
+  return (
+    <div className="flex items-center gap-3">
+      {/* Profile Initials Skeleton */}
+      <div className="relative w-12 h-12 bg-gray-300 flex justify-center items-center border border-red-500 rounded-md overflow-hidden">
+        <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+      </div>
+
+      {/* Profile Name & Email Skeleton */}
+      <div className="flex flex-col gap-1">
+        <div className="relative w-24 h-5 bg-gray-300 rounded-md overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+        </div>
+        <div className="relative w-32 h-4 bg-gray-300 rounded-md overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+export function ProfileDetailsSkeleton() {
+  return (
+    <div className="flex flex-col gap-2">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <div key={index} className="flex items-center gap-2">
+          {/* Icon Skeleton */}
+          <div className="relative w-5 h-5 bg-gray-300 rounded-md overflow-hidden">
+            <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+          </div>
+
+          {/* Text Skeleton */}
+          <div className="relative w-32 h-4 bg-gray-300 rounded-md overflow-hidden">
+            <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+
+export function ProfileGridSkeleton() {
+  return (
+    <div className="grid grid-cols-2 gap-x-2 gap-y-2 w-full ">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <div key={index} className="w-[30vw] h-54 bg-gray-300 rounded-md relative overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+
+
+
+export function EditPageProfileSkeleton() {
+  return (
+    <div className="flex items-center gap-20">
+      {/* Profile Initials Skeleton */}
+      <div className="w-20 h-20 flex justify-center items-center text-3xl rounded-xl bg-gray-300 border-[5px] border-gray-400 relative overflow-hidden">
+        <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+      </div>
+
+      {/* Profile Details Skeleton */}
+      <div className="text-white ">
+        <div className="flex gap-3 items-center">
+          {/* Name Skeleton */}
+          <div className="w-28 h-5 bg-gray-300 rounded-md relative overflow-hidden">
+            <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+          </div>
+
+          {/* Icon Skeleton */}
+          <div className="w-5 h-5 bg-gray-300 rounded-md relative overflow-hidden">
+            <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+          </div>
+        </div>
+
+        {/* Email Skeleton */}
+        <div className="w-40 h-4 bg-gray-300 rounded-md mt-2 relative overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
         </div>
       </div>
     </div>

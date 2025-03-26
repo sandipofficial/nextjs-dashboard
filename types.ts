@@ -20,3 +20,7 @@ export interface FormErrors {
     REVIEW = '/auth/signup/review'
   }
   
+  export enum DashboardRoutes {
+    PROFILE = "/dashboard/profile",
+    EDIT_PROFILE =  "/dashboard/profile/edit",
+  }

@@ -46,6 +46,16 @@ import { prisma } from "./prisma";
 /**
  * Fetches user profile details from the database.
  */
+const countryMapping: Record<string, string> = {
+  IN: "India",
+  US: "United States",
+  UK: "United Kingdom",
+  CA: "Canada",
+  DE: "Germany",
+  FR: "France",
+  // Add more countries as needed
+};
+
 export async function fetchProfile(userId: number) {
   try {
     const user = await prisma.user.findUnique({
@@ -62,6 +72,8 @@ export async function fetchProfile(userId: number) {
         isVerified: true,
         role: { select: { name: true } }, // Fetch role name
         lastLoginAt: true,
+        kycStatus: true,
+        address: { select: { country: true } }, // Fetch country from address table
       },
     });
 
@@ -73,11 +85,13 @@ export async function fetchProfile(userId: number) {
       email: user.email,
       mobileNumber: user.mobileNumber,
       gender: user.gender,
-      dob: user.dob,
+      dob: user.dob ? new Date(user.dob).toDateString(): null,
       isActive: user.isActive,
       isVerified: user.isVerified,
       role: user.role.name,
       lastLoginAt: user.lastLoginAt ? new Date(user.lastLoginAt).toISOString() : null,
+      kycStatus: user.kycStatus,
+      country: user.address?.country ? countryMapping[user.address.country] || user.address.country : null,
     };
   } catch (error) {
     console.error("Error fetching profile:", error);

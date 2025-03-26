@@ -103,6 +103,9 @@ export const submitReviewAction = async (
     console.log("User successfully created!");
   } catch (error) {
     console.error("Error creating user:", error);
+    if (error.code === "23505") {
+      return { success: false, errorMsg: "Mobile number already exists. Please use a different number." };
+    }
     throw new Error(
       "An error occurred while creating the user. Please try again."
     );

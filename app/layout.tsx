@@ -1,6 +1,7 @@
 import "@/app/ui/global.css";
 import { inter } from "./ui/fonts";
 import QueryProvider from "@/contexts/QueryProvider";
+import { Toaster } from "react-hot-toast";
 export default function RootLayout({
   children,
 }: {
@@ -8,7 +9,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}><QueryProvider>{children}</QueryProvider></body>
+      <body className={`${inter.className} antialiased`}>
+        <QueryProvider>
+          <Toaster position="top-right" />
+          {children}
+        </QueryProvider>
+      </body>
     </html>
   );
 }

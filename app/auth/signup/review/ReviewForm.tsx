@@ -65,7 +65,7 @@ export default function ReviewForm() {
         {address_country}, {address_zipCode}
       </p>
       <SubmitButton text="Submit" verified={true} />
-      <div>{err}</div>
+      {/* <div className="text-sm text-red-500">{err}</div> */}
     </form>
   );
 }

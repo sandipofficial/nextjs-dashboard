@@ -38,7 +38,7 @@ export default function SettingsMenu() {
     <div className="relative inline-block" ref={menuRef}>
       {/* Settings Button */}
       <div
-        className="flex items-center h-[48px] gap-1 px-3 py-2 cursor-pointer bg-white  rounded-lg"
+        className="flex items-center h-[48px] gap-1 px-3 py-2 cursor-pointer bg-gray-50 rounded-lg"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="hover:text-teal-500 flex gap-2">

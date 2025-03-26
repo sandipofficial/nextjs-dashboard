@@ -2,6 +2,7 @@ import SideNav from "@/app/ui/dashboard/sidenav";
 import Header from "../ui/dashboard/header";
 import { ProfileProvider } from "@/contexts/ProfleContext";
 import { lusitana } from "../ui/fonts";
+import Breadcrumb from "../ui/dashboard/Breadcrumb";
 
 export const experimental_ppr = true;
 
@@ -16,7 +17,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
         </div>
         <div className="m-3">
           <Header />
-          <div className="flex-grow p-6 md:overflow-y-auto md:p-">
+          <Breadcrumb/>
+          <div className="flex-grow p-1 md:overflow-y-auto md:p-1">
             {children}
           </div>
         </div>
