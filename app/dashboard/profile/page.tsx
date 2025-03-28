@@ -27,7 +27,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="w-full flex gap-3">
+    <div className="w-full flex gap-3 overflow-hidden">
       <div className=" border border-black p-2 rounded w-[30%] h-[78vh] scroll-auto ">
         {/* profile */}
         {isLoading ? (
@@ -38,14 +38,16 @@ export default function Page() {
               {profile?.initials}
             </div>
             <div>
-              <div className="text-md">{profile?.fullName}</div>
+              <div className="text-md">
+                {profile?.firstName} {profile?.lastName}
+              </div>
               <div className="text-sm">{profile?.email}</div>
             </div>
           </div>
         )}
 
         <Link
-          href= {DashboardRoutes.EDIT_PROFILE}
+          href={DashboardRoutes.EDIT_PROFILE}
           className="my-3 py-1 rounded bg-teal-500 flex justify-center items-center text-black  text-sm  hover:bg-teal-600 transition"
         >
           {isLoading ? "Loading..." : "Edit Profile"}

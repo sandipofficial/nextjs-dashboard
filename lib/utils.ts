@@ -1,6 +1,6 @@
 "use server";
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import postgres from "postgres";
 import { Profile } from "@/contexts/ProfleContext";
 
@@ -10,9 +10,8 @@ import { Profile } from "@/contexts/ProfleContext";
 // const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
 export async function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
-
 
 // export async function getProfile(userId: string): Promise<Profile | null> {
 
@@ -39,8 +38,6 @@ export async function cn(...inputs: ClassValue[]) {
 //   }
 // }
 
-
-
 import { prisma } from "./prisma";
 
 /**
@@ -56,11 +53,12 @@ const countryMapping: Record<string, string> = {
   // Add more countries as needed
 };
 
-export async function fetchProfile(userId: number) {
+export async function fetchProfile(emailId: string) {
   try {
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { email: emailId },
       select: {
+        id: true,
         firstName: true,
         lastName: true,
         initials: true,
@@ -74,24 +72,32 @@ export async function fetchProfile(userId: number) {
         lastLoginAt: true,
         kycStatus: true,
         address: { select: { country: true } }, // Fetch country from address table
+        profileUrl: true,
       },
     });
 
     if (!user) return null;
 
     return {
-      fullName: `${user.firstName} ${user.lastName}`,
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
       initials: user.initials,
       email: user.email,
       mobileNumber: user.mobileNumber,
       gender: user.gender,
-      dob: user.dob ? new Date(user.dob).toDateString(): null,
+      dob: user.dob ? new Date(user.dob).toDateString() : null,
       isActive: user.isActive,
       isVerified: user.isVerified,
       role: user.role.name,
-      lastLoginAt: user.lastLoginAt ? new Date(user.lastLoginAt).toISOString() : null,
+      lastLoginAt: user.lastLoginAt
+        ? new Date(user.lastLoginAt).toISOString()
+        : null,
       kycStatus: user.kycStatus,
-      country: user.address?.country ? countryMapping[user.address.country] || user.address.country : null,
+      country: user.address?.country
+        ? countryMapping[user.address.country] || user.address.country
+        : null,
+      profileUrl: user.profileUrl,
     };
   } catch (error) {
     console.error("Error fetching profile:", error);

@@ -53,7 +53,7 @@ export const submitReviewAction = async (
     lastName,
     email,
     gender,
-    dateOfBirth,
+    dob,
     password,
     mobileNumber,
     address_street,
@@ -75,7 +75,7 @@ export const submitReviewAction = async (
         "preferredLanguage", "panNumber", "createdAt", "updatedAt", "isActive", "isVerified", "roleId", "kycStatus"
       )
       VALUES (
-        ${firstName}, ${lastName}, ${email}, ${hashedPassword}, ${mobileNumber}, ${initials}, ${dateOfBirth}, ${gender}, 
+        ${firstName}, ${lastName}, ${email}, ${hashedPassword}, ${mobileNumber}, ${initials}, ${dob}, ${gender}, 
         'English', NULL, NOW(), NOW(), TRUE, FALSE, 2, 'Pending'
       )
       ON CONFLICT ("email") DO NOTHING
@@ -104,7 +104,11 @@ export const submitReviewAction = async (
   } catch (error) {
     console.error("Error creating user:", error);
     if (error.code === "23505") {
-      return { success: false, errorMsg: "Mobile number already exists. Please use a different number." };
+      return {
+        success: false,
+        errorMsg:
+          "Mobile number already exists. Please use a different number.",
+      };
     }
     throw new Error(
       "An error occurred while creating the user. Please try again."

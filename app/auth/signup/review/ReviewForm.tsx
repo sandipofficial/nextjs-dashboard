@@ -13,13 +13,12 @@ export default function ReviewForm() {
   const { newSignUpData, resetAuthStorage } = useAuthContext();
   const [err, setErr] = React.useState<string | undefined>(undefined);
 
-
   const {
     firstName,
     lastName,
     email,
     gender,
-    dateOfBirth,
+    dob,
     mobileNumber,
     address_street,
     address_country,
@@ -36,7 +35,7 @@ export default function ReviewForm() {
       toast.success("Details submitted successfully");
       resetAuthStorage();
     } else if (errorMsg) {
-      setErr(errorMsg)
+      setErr(errorMsg);
       toast.error(errorMsg);
     }
     if (redirect) {
@@ -45,7 +44,6 @@ export default function ReviewForm() {
         router.push(redirect);
       }, 3000);
     }
-    
   };
 
   return (
@@ -58,7 +56,7 @@ export default function ReviewForm() {
       </p>
       <p className="font-light ">Email ID: {email}</p>
       <p className="">Gender: {gender}</p>
-      <p className="">Date of Birth: {dateOfBirth}</p>
+      <p className="">Date of Birth: {dob}</p>
       <p className="">Mobile Number: {mobileNumber}</p>
       <p className="">
         Address: {address_street}, {address_city}, {address_state},{" "}

@@ -277,7 +277,6 @@ export function ProfileSkeleton() {
   );
 }
 
-
 export function ProfileDetailsSkeleton() {
   return (
     <div className="flex flex-col gap-2">
@@ -298,12 +297,14 @@ export function ProfileDetailsSkeleton() {
   );
 }
 
-
 export function ProfileGridSkeleton() {
   return (
     <div className="grid grid-cols-2 gap-x-2 gap-y-2 w-full ">
       {Array.from({ length: 4 }).map((_, index) => (
-        <div key={index} className="w-[30vw] h-54 bg-gray-300 rounded-md relative overflow-hidden">
+        <div
+          key={index}
+          className="w-[30vw] h-54 bg-gray-300 rounded-md relative overflow-hidden"
+        >
           <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
         </div>
       ))}
@@ -311,14 +312,11 @@ export function ProfileGridSkeleton() {
   );
 }
 
-
-
-
 export function EditPageProfileSkeleton() {
   return (
-    <div className="flex items-center gap-20">
+    <div className="flex items-center gap-16">
       {/* Profile Initials Skeleton */}
-      <div className="w-20 h-20 flex justify-center items-center text-3xl rounded-xl bg-gray-300 border-[5px] border-gray-400 relative overflow-hidden">
+      <div className="w-28 h-28 flex justify-center items-center text-3xl rounded-xl bg-gray-300 border-[5px] border-gray-300 relative overflow-hidden">
         <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent" />
       </div>
 
@@ -344,3 +342,34 @@ export function EditPageProfileSkeleton() {
     </div>
   );
 }
+
+export function EditBasicDetailsSkeleton() {
+  return (
+    <div className="bg-white rounded-md w-[75%] h-[64%] p-5 mx-auto shadow-md absolute top-40 mb-5 left-70">
+      <div>
+        {/* Title Skeleton */}
+        <div className="h-6 bg-gray-300 rounded w-32 mb-4 relative overflow-hidden">
+          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+        </div>
+
+        {/* Fields Skeleton */}
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="flex justify-between space-x-2 items-center py-2 border-b">
+            <div className="flex gap-3 w-full">
+              <div className="h-5 w-20 rounded bg-gray-300 relative overflow-hidden">
+                <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+              </div>
+              <div className="h-5 flex-1 rounded bg-gray-300 relative overflow-hidden">
+                <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+              </div>
+            </div>
+            <div className="h-5 w-12 rounded bg-gray-300 relative overflow-hidden">
+              <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+

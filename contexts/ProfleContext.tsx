@@ -5,7 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProfile } from "@/lib/utils";
 
 export type Profile = {
-  fullName: string;
+  id: number;
+  firstName: string;
+  lastName: string;
   email: string;
   initials: string;
   mobileNumber: string;
@@ -17,6 +19,7 @@ export type Profile = {
   lastLoginAt: string | null;
   kycStatus: string;
   country: string | null;
+  profileUrl: string | null;
 };
 
 interface ProfileContextType {
@@ -27,14 +30,26 @@ interface ProfileContextType {
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
-export function ProfileProvider({ userId, children }: { userId: number; children: React.ReactNode }) {
-  const { data: profile, isLoading, isError } = useQuery({
-    queryKey: ["profile", userId],
-    queryFn: () => fetchProfile(userId),
+export function ProfileProvider({
+  emailId,
+  children,
+}: {
+  emailId: string;
+  children: React.ReactNode;
+}) {
+  const {
+    data: profile,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["profile", emailId],
+    queryFn: () => fetchProfile(emailId),
   });
 
   return (
-    <ProfileContext.Provider value={{ profile: profile ?? null, isLoading, isError }}>
+    <ProfileContext.Provider
+      value={{ profile: profile ?? null, isLoading, isError }}
+    >
       {children}
     </ProfileContext.Provider>
   );

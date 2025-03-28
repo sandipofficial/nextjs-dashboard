@@ -8,10 +8,16 @@ import postgres from "postgres";
 import { LandingPageRoutes } from "@/types";
 import { LoginSchema } from "./schemas";
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error("POSTGRES_URL is not defined in environment variables");
+let sql: ReturnType<typeof postgres>;
+try {
+  if (!process.env.POSTGRES_URL) {
+    throw new Error("POSTGRES_URL is not defined in environment variables");
+  }
+  sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
+} catch (error) {
+  console.error("Database connection error:", error);
+  throw new Error("Failed to establish database connection");
 }
-const sql = postgres(process.env.POSTGRES_URL, { ssl: "require" });
 
 async function getUser(email: string): Promise<User | undefined> {
   try {
@@ -54,11 +60,13 @@ export const { auth, signIn, signOut } = NextAuth({
             console.log("Incorrect password");
             return null;
           }
+          const firstName = user.firstName;
+          const lastName = user.lastName;
 
           return {
             id: user.id.toString(),
             email: user.email,
-            // name: user.name,
+            name: `${firstName} ${lastName} `,
             url: LandingPageRoutes.DASHBOARD,
           };
         } catch (error) {

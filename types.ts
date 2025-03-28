@@ -23,4 +23,5 @@ export interface FormErrors {
   export enum DashboardRoutes {
     PROFILE = "/dashboard/profile",
     EDIT_PROFILE =  "/dashboard/profile/edit",
+    KYC = "/dashboard/profile/edit/kyc"
   }

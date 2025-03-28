@@ -28,7 +28,7 @@ export const stepOneSchema = z
         /[\W_]/,
         "Password must contain at least one special character (e.g. @, #, $, %, etc.)."
       ),
-    dateOfBirth: z.string().refine((date) => !isNaN(Date.parse(date)), {
+    dob: z.string().refine((date) => !isNaN(Date.parse(date)), {
       message: "Please enter a valid date of birth.",
     }),
     mobileNumber: z
@@ -79,7 +79,7 @@ export const newSignUpInitialValuesSchema = z.object({
   gender: z.enum(["Male", "Female", "Other"]).optional(),
   password: z.string().optional(),
   confirmPassword: z.string().optional(),
-  dateOfBirth: z.string().optional(),
+  dob: z.string().optional(),
   mobileNumber: z.string().optional(),
   otp: z.string().optional(),
   address_street: z.string().optional(),
@@ -98,15 +98,15 @@ export type NewSignUpInitialValuesType = z.infer<
 export const LoginSchema = z.object({
   email: z.string().email({ message: "Invalid email format" }),
   password: z
-  .string()
-  .min(8, "Confirm Password must be at least 8 characters long.")
-  .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
-  .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
-  .regex(/[0-9]/, "Password must contain at least one number.")
-  .regex(
-    /[\W_]/,
-    "Password must contain at least one special character (e.g. @, #, $, %, etc.)."
-  ),
+    .string()
+    .min(8, "Confirm Password must be at least 8 characters long.")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+    .regex(/[0-9]/, "Password must contain at least one number.")
+    .regex(
+      /[\W_]/,
+      "Password must contain at least one special character (e.g. @, #, $, %, etc.)."
+    ),
 });
 
 // Login Initial Values Schema (for form default values)
@@ -127,33 +127,31 @@ export const LoginInitialValuesSchema = z.object({
 export type LoginType = z.infer<typeof LoginSchema>;
 export type LoginInitialValuesType = z.infer<typeof LoginInitialValuesSchema>;
 
-
 export const RequestPasswordResetSchema = z.object({
   email: z.string().email("Invalid email format"),
 });
 
 // export type RequestPasswordResetType = z.infer<typeof RequestPasswordResetSchema>;
 
+export const ResetPasswordSchema = z
+  .object({
+    token: z.string().min(1, "Token is required"), // Ensure token is provided
+    email: z.string().email("Invalid email format"), // Ensure email is valid
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .max(32, "Password cannot exceed 32 characters")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number")
+      .regex(/[\W_]/, "Password must contain at least one special character"),
 
-export const ResetPasswordSchema = z.object({
-  token: z.string().min(1, "Token is required"), // Ensure token is provided
-  email: z.string().email("Invalid email format"), // Ensure email is valid
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters long")
-    .max(32, "Password cannot exceed 32 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[\W_]/, "Password must contain at least one special character"),
-  
-  confirmPassword: z
-    .string()
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
-
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export const otpVerificationSchema = z.object({
   mobileNumber: z
@@ -165,4 +163,3 @@ export const otpVerificationSchema = z.object({
     .length(6, "OTP must be exactly 6 digits")
     .regex(/^\d+$/, "OTP must contain only digits"),
 });
-

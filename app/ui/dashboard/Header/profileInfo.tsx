@@ -42,11 +42,15 @@ export default function ProfileInfo() {
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="bg-white text-black w-10 h-10 flex justify-center items-center rounded-full">
-          {profile?.initials}
+          {profile?.profileUrl ? (
+            <img src={profile.profileUrl} alt="Profile" width={150} className="rounded-full" />
+          ) : (
+            <p>{profile?.initials}</p>
+          )}
         </div>
-        <div>{profile?.fullName}</div>
-
-   
+        <div className="capatilize">
+          {profile?.firstName} {profile?.lastName}
+        </div>
       </div>
 
       {/* Dropdown Menu (Appears Below the Profile Section) */}
@@ -57,7 +61,7 @@ export default function ProfileInfo() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="absolute right-0 mt-2 w-32 shadow-lg rounded-lg border p-2 bg-white"
+            className="absolute right-0 mt-2 z-50 w-32 shadow-lg rounded-lg border p-2 bg-white"
           >
             <ul className="space-y-1 ">
               {menuItems.map((item, index) => (

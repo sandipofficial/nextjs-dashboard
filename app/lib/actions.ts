@@ -46,17 +46,13 @@ const SignupFormSchema = z
 
     confirmPassword: z.string(),
 
-    mobileNumber: z
-      .string()
-      .regex(/^\d{10}$/, {
-        message: "Mobile number must be exactly 10 digits.",
-      }),
+    mobileNumber: z.string().regex(/^\d{10}$/, {
+      message: "Mobile number must be exactly 10 digits.",
+    }),
 
-    dob: z
-      .string()
-      .regex(/^\d{4}-\d{2}-\d{2}$/, {
-        message: "Date of Birth must be in YYYY-MM-DD format.",
-      }),
+    dob: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
+      message: "Date of Birth must be in YYYY-MM-DD format.",
+    }),
 
     gender: z.enum(["Male", "Female", "Other"]).optional(),
 

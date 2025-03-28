@@ -73,10 +73,10 @@ export default function StepOneForm() {
 
         <Input
           label="Date of Birth"
-          id="dateOfBirth"
+          id="dob"
           type="date"
           placeholder="Select your date of birth"
-          errorMsg={serverErrors?.dateOfBirth}
+          errorMsg={serverErrors?.dob}
         />
 
         <Input

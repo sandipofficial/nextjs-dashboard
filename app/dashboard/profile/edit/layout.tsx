@@ -3,7 +3,7 @@ import HeroProfile from "@/app/ui/dashboard/profile/edit/HeroProfile";
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-full relative">
+    <div className="w-full relative ">
       <HeroProfile />
       <div className="flex">
         <EditProfileNav />

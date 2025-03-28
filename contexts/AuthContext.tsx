@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   createContext,
   useCallback,
@@ -6,7 +6,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
+} from "react";
 import {
   NewSignUpInitialValuesType,
   NewSignUpType,
@@ -14,31 +14,31 @@ import {
   LoginInitialValuesType,
   LoginType,
   LoginInitialValuesSchema,
-} from '@/schemas';
+} from "@/schemas";
 
-const SIGNUP_STORAGE_KEY = 'multi-page-signup-data';
-const LOGIN_STORAGE_KEY = 'multi-page-login-data';
+const SIGNUP_STORAGE_KEY = "multi-page-signup-data";
+const LOGIN_STORAGE_KEY = "multi-page-login-data";
 
 const defaultSignupData: NewSignUpInitialValuesType = {
-  firstName: '',
-  lastName: '',
-  email: '',
+  firstName: "",
+  lastName: "",
+  email: "",
   gender: undefined,
-  password: '',
-  confirmPassword: '',
-  dateOfBirth: '',
-  mobileNumber: '',
-  otp: '',
-  address_street: '',
-  address_city: '',
-  address_state: '',
-  address_country: '',
-  address_zipCode: '',
+  password: "",
+  confirmPassword: "",
+  dob: "",
+  mobileNumber: "",
+  otp: "",
+  address_street: "",
+  address_city: "",
+  address_state: "",
+  address_country: "",
+  address_zipCode: "",
 };
 
 const defaultLoginData: LoginInitialValuesType = {
-  email: '',
-  password: '',
+  email: "",
+  password: "",
 };
 
 // AuthContext Type
@@ -53,9 +53,15 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [newSignUpData, setNewSignUpData] = useState<NewSignUpInitialValuesType>(defaultSignupData);
-  const [loginData, setLoginData] = useState<LoginInitialValuesType>(defaultLoginData);
+export const AuthContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [newSignUpData, setNewSignUpData] =
+    useState<NewSignUpInitialValuesType>(defaultSignupData);
+  const [loginData, setLoginData] =
+    useState<LoginInitialValuesType>(defaultLoginData);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
@@ -87,13 +93,21 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     const loginDataString = localStorage.getItem(LOGIN_STORAGE_KEY);
 
     if (signupDataString) {
-      const validatedSignup = newSignUpInitialValuesSchema.safeParse(JSON.parse(signupDataString));
-      setNewSignUpData(validatedSignup.success ? validatedSignup.data : defaultSignupData);
+      const validatedSignup = newSignUpInitialValuesSchema.safeParse(
+        JSON.parse(signupDataString)
+      );
+      setNewSignUpData(
+        validatedSignup.success ? validatedSignup.data : defaultSignupData
+      );
     }
 
     if (loginDataString) {
-      const validatedLogin = LoginInitialValuesSchema.safeParse(JSON.parse(loginDataString));
-      setLoginData(validatedLogin.success ? validatedLogin.data : defaultLoginData);
+      const validatedLogin = LoginInitialValuesSchema.safeParse(
+        JSON.parse(loginDataString)
+      );
+      setLoginData(
+        validatedLogin.success ? validatedLogin.data : defaultLoginData
+      );
     }
   };
 
@@ -104,22 +118,29 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     setLoginData(defaultLoginData);
   };
 
-  const contextValue = useMemo(() => ({
-    newSignUpData,
-    updateNewSignUpData,
-    loginData,
-    updateLoginData,
-    dataLoaded,
-    resetAuthStorage,
-  }), [newSignUpData, loginData, dataLoaded, updateNewSignUpData, updateLoginData]);
+  const contextValue = useMemo(
+    () => ({
+      newSignUpData,
+      updateNewSignUpData,
+      loginData,
+      updateLoginData,
+      dataLoaded,
+      resetAuthStorage,
+    }),
+    [newSignUpData, loginData, dataLoaded, updateNewSignUpData, updateLoginData]
+  );
 
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+  );
 };
 
 export function useAuthContext() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuthContext must be used within an AuthContextProvider');
+    throw new Error(
+      "useAuthContext must be used within an AuthContextProvider"
+    );
   }
   return context;
 }

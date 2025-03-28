@@ -20,6 +20,7 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
+      // console.log(auth?.user?.email)
       const isOnDashboard = nextUrl.pathname.startsWith(LandingPageRoutes.DASHBOARD);
       if (isOnDashboard) {
         if (isLoggedIn) return true;
@@ -29,6 +30,7 @@ export const authConfig = {
       }
       return true;
     },
+   
     // async signIn({ account, profile }) {
     //   if (account.provider === "google") {
     //     return profile.email_verified && profile.email.endsWith("@example.com")
@@ -36,24 +38,5 @@ export const authConfig = {
     //   return true // Do different verification for other providers that don't have `email_verified`
     // },
   },
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID!,
-      clientSecret: process.env.GOOGLE_SECRET!,
-    }),
-    Credentials({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
-
-        // Ensure email is explicitly treated as a string
-        const email = String(credentials.email);
-        return { id: "1", email }; // ✅ Fix: `email` is a string now
-      },
-    }),
-  ], // Add providers with an empty array for now
+  providers: [ ], // Add providers with an empty array for now
 } satisfies NextAuthConfig;

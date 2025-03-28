@@ -10,7 +10,6 @@ export type Role = {
   updatedAt: Date;
 };
 
-
 export type User = {
   id: number;
   firstName: string;
@@ -44,7 +43,6 @@ export type User = {
   savedCards?: string[];
 };
 
-
 export type BankAccount = {
   id: string; // Unique Bank Account ID
   userId: string; // Foreign key referencing User.id
@@ -58,8 +56,6 @@ export type BankAccount = {
   updatedAt: Date;
   status: "Active" | "Inactive" | "Closed";
 };
-
-
 
 export type Customer = {
   id: string;
@@ -82,7 +78,6 @@ export type Customer = {
   status: "Active" | "Inactive"; // Customer status
 };
 
-
 export type Invoice = {
   id: string;
   customerId: string; // Foreign key referencing Customer.id
@@ -101,7 +96,6 @@ export type Invoice = {
   updatedAt: Date;
 };
 
-
 export type Revenue = {
   id: string;
   userId: string; // Foreign key referencing User.id (business owner)
@@ -116,6 +110,3 @@ export type Revenue = {
   createdAt: Date;
   updatedAt: Date;
 };
-
-
-

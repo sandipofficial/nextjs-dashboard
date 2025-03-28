@@ -1,21 +1,22 @@
 'use client';
 
-import { UserIcon, LockClosedIcon, CogIcon, BellIcon } from '@heroicons/react/24/outline';
+import { UserIcon, LockClosedIcon, CogIcon, BellIcon, VideoCameraIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
 const profileLinks = [
-  { name: 'Basic Details', href: '/profile/basic-details', icon: UserIcon },
-  { name: 'Security', href: '/profile/security', icon: LockClosedIcon },
-  { name: 'Preferences', href: '/profile/preferences', icon: CogIcon },
-  { name: 'Notifications', href: '/profile/notifications', icon: BellIcon },
+  { name: 'Basic Details', href: '/dashboard/profile/edit', icon: UserIcon },
+  { name: 'KYC', href: '/dashboard/profile/edit/kyc', icon: VideoCameraIcon },
+  { name: 'Security', href: '/dashboard/profile/security', icon: LockClosedIcon },
+  { name: 'Preferences', href: '/dashboard/profile/preferences', icon: CogIcon },
+  { name: 'Notifications', href: '/dashboard/profile/notifications', icon: BellIcon },
 ];
 
 export default function EditProfileNav() {
   const pathname = usePathname();
   return (
-    <nav className="w-full md:w-60 border-r p-4 bg-gray-50">
+    <nav className="w-full md:w-60 border-r p-4  bg-gray-50">
       <div className="flex flex-col gap-2">
         {profileLinks.map((link) => {
           const LinkIcon = link.icon;
